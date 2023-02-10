@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Body
+from fastapi import FastAPI, Body
 from pymongo import MongoClient
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -51,16 +51,6 @@ class Data(BaseModel):
     sunroof: bool
 
 
-def moisture_to_percentage(moisture):
-    percentage = round((moisture/1023)*100)
-    return percentage
-
-
-def percentage_to_moisture(percentage):
-    moisture = round((percentage/100)*1023)
-    return moisture
-
-
 @app.get("/")
 def read_root():
     return {"Hello": "Welcome to my little garden."}
@@ -73,8 +63,8 @@ def read_all_garden():
     sprink = data[1]
     buz_sun = data[2]
     for_send = {
-        "moist_value": moisture_to_percentage(moist["moist_value"]),
-        "moist_default": moisture_to_percentage(moist["moist_default"]),
+        "moist_value": moist["moist_value"],
+        "moist_default": moist["moist_default"],
         "sprinkle_1": {
             "is_auto": sprink["sprinkle_1"]["is_auto"],
             "is_activate": sprink["sprinkle_1"]["is_activate"]
@@ -99,17 +89,17 @@ def update_garden(data: Data = Body()):
             is_active_1 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_1"]["is_activate"]
             is_active_2 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_2"]["is_activate"]
             if is_auto_1 == True and is_active_1 == True:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": percentage_to_moisture((data.moist_default)), "moist_value": percentage_to_moisture((data.moist_value))}})
+                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
             elif is_auto_1 == False and is_active_1 == False:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": percentage_to_moisture((data.moist_default)), "moist_value": percentage_to_moisture((data.moist_value))}})
+                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
             elif is_active_1 == True:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default":  percentage_to_moisture((data.moist_default)), "moist_value": percentage_to_moisture((data.moist_value))}})
+                collection.update_one({"name": "moisture"}, {"$set": {"moist_default":  data.moist_default, "moist_value": data.moist_value}})
             elif is_auto_2 == True and is_active_2 == True:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": percentage_to_moisture((data.moist_default)), "moist_value": percentage_to_moisture((data.moist_value))}})
+                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
             elif is_auto_2 == False and is_active_2 == False:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": percentage_to_moisture((data.moist_default)), "moist_value": percentage_to_moisture((data.moist_value))}})
+                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
             elif is_active_2 == True:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default":  percentage_to_moisture((data.moist_default)), "moist_value": percentage_to_moisture((data.moist_value))}})
+                collection.update_one({"name": "moisture"}, {"$set": {"moist_default":  data.moist_default, "moist_value": data.moist_value}})
 
         if i["name"] == "moisture":
             moisture = i["moist_value"]
