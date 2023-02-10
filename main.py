@@ -32,3 +32,14 @@ app.add_middleware(
 @app.get("/")
 def read_root():
     return {"Hello": "Welcome to my little garden."}
+
+def moisture_to_percentage(moisture):
+    percentage = round((moisture/1023)*100,2)
+    return percentage
+
+def percentage_to_moisture(percentage):
+    percentage = round((percentage/100)*1023,2)
+    return percentage
+
+
+
