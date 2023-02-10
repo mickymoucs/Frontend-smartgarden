@@ -66,7 +66,7 @@ def read_all_garden():
     buz_sun = data[2]
     for_send = {
         "moist_value": moisture_to_percentage(moist["moist_value"]),
-        "moist_default": moisture_to_percentage(moist["moist_defualt"]),
+        "moist_default": moisture_to_percentage(moist["moist_default"]),
         "sprinkle_1": {
             "is_auto": sprink["sprinkle_1"]["is_auto"],
             "is_activate": sprink["sprinkle_1"]["is_activate"]
