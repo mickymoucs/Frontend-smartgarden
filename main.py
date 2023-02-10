@@ -32,3 +32,38 @@ app.add_middleware(
 @app.get("/")
 def read_root():
     return {"Hello": "Welcome to my little garden."}
+
+
+@app.get("/garden/all")
+def read_all_garden():
+    return list(collection.find())
+
+@app.post("/garden/update")
+def update_garden():
+    pass
+
+
+@app.get("/garden/{name}")
+def sprinkle():
+    return list(collection.find({"name": "sprinkle"}))
+
+
+@app.get("/garden/{name}")
+def moisture():
+    return list(collection.find({"name": "moisture"}))
+
+@app.get("/garden/{name}")
+def buzzer():
+    return list(collection.find({"name": "buzzer-sunroof"}))
+
+@app.post("/update/{name}")
+def update_sprinkle(name: str, value: int):
+    pass
+
+@app.post("/update/{name}")
+def update_moisture(name: str, value: int):
+    pass
+
+@app.post("/update/{name}")
+def update_buzzer(name: str, value: int):
+    pass
