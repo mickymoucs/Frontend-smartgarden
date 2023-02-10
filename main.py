@@ -59,10 +59,9 @@ def read_root():
 
 @app.get("/garden/all")
 def read_all_garden():
-    data = collection.find({}, {"_id": False})
-    moist = data[0]
-    sprink = data[1]
-    buz_sun = data[2]
+    moist = collection.find_one({"name": "moisture"})
+    sprink = collection.find_one({"name": "sprinkle"})
+    buz_sun = collection.find_one({"name": "buzzer-sunroof"})
     for_send = {
         "moist_value": moist["moist_value"],
         "moist_default": moist["moist_default"],
