@@ -3,7 +3,6 @@ from pymongo import MongoClient
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-from math import ceil
 import os
 
 load_dotenv(".env")
@@ -53,12 +52,12 @@ class Data(BaseModel):
 
 
 def moisture_to_percentage(moisture):
-    percentage = ceil((moisture/1023)*100)
+    percentage = round((moisture/1023)*100)
     return percentage
 
 
 def percentage_to_moisture(percentage):
-    moisture = ceil((percentage/100)*1023)
+    moisture = round((percentage/100)*1023)
     return moisture
 
 
