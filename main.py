@@ -70,23 +70,24 @@ def sprinkle():
 
 @app.get("/garden/moisture")
 def moisture():
-    return list(collection.find({"name": "moisture"}))
+    return collection.find_one({"name":"moisture"},{"_id":False})
 
 @app.get("/garden/buzzer-sunroof")
 def buzzer():
-    return list(collection.find({"name": "buzzer-sunroof"}))
-
-@app.post("/update/sprinkle")
-def update_sprinkle(name: str, value: int):
-    pass
+    return collection.find_one({"name":"buzzer-sunroof"},{"_id":False})
 
 @app.post("/update/moisture")
-def update_moisture(name: str, value: int):
-    pass
+def update_moisture(moisture_value:int):
+    collection.update_one({"name": "moisture"},{"$set": {"moisture_value": moisture_value}})
+    return {f"Moisture has been updated to {moisture_value}"}
 
 @app.post("/update/buzzer-sunroof")
-def update_buzzer(name: str, value: int):
-    pass
-
+def update_buzzer(buzzer:BuzzerSunroof):
+    if buzzer.buzzer == True:
+        collection.update_one({"name":"buzzer-sunroof"},{"$set":{"buzzer":buzzer.buzzer,"sunroof":False}})
+        return {"status":f"Your buzzer is now {buzzer.buzzer} and your sunroof is now False"}
+    elif buzzer.buzzer == False:
+        collection.update_one({"name":"buzzer-sunroof"},{"$set":{"buzzer":buzzer.buzzer,"sunroof":buzzer.sunroof}})
+        return {"status":f"Your buzzer is now {buzzer.buzzer} and your sunroof is now {buzzer.sunroof}"}
 
 
