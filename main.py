@@ -28,6 +28,26 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class Moisture(BaseModel):
+    moisture_value: int
+
+class Sprinkle(BaseModel):
+    is_auto: bool
+    is_active: bool
+
+class BuzzerSunroof(BaseModel):
+    buzzer: bool
+    sunroof: bool
+
+
+def moisture_to_percentage(moisture):
+    percentage = round((moisture/1023)*100,2)
+    return percentage
+
+def percentage_to_moisture(percentage):
+    percentage = round((percentage/100)*1023,2)
+    return percentage
+
 
 @app.get("/")
 def read_root():
@@ -41,7 +61,6 @@ def read_all_garden():
 @app.post("/garden/update")
 def update_garden():
     pass
-
 
 @app.get("/garden/{name}")
 def sprinkle():
@@ -67,13 +86,6 @@ def update_moisture(name: str, value: int):
 @app.post("/update/{name}")
 def update_buzzer(name: str, value: int):
     pass
-def moisture_to_percentage(moisture):
-    percentage = round((moisture/1023)*100,2)
-    return percentage
-
-def percentage_to_moisture(percentage):
-    percentage = round((percentage/100)*1023,2)
-    return percentage
 
 
 
