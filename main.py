@@ -45,12 +45,12 @@ class BuzzerSunroof(BaseModel):
 
 
 def moisture_to_percentage(moisture):
-    percentage = round((moisture/1023)*100, 2)
+    percentage = int((moisture/1023)*100)
     return percentage
 
 
 def percentage_to_moisture(percentage):
-    percentage = round((percentage/100)*1023, 2)
+    percentage = int((percentage/100)*1023)
     return percentage
 
 
@@ -103,16 +103,17 @@ def buzzer_sunroof():
     return collection.find_one({"name": "buzzer-sunroof"}, {"_id": False, "name": 0})
 
 
-@app.post("/update/sprinkle")
-def update_sprinkle(name: str, value: int):
-    pass
-
-
 @app.post("/update/moisture")
-def update_moisture(name: str, value: int):
-    pass
+def update_moisture(moisture_value:int):
+    collection.update_one({"name": "moisture"},{"$set": {"moisture_value": moisture_value}})
+    return {f"Moisture has been updated to {moisture_value}"}
 
 
 @app.post("/update/buzzer-sunroof")
-def update_buzzer(name: str, value: int):
-    pass
+def update_buzzer(buzzer:BuzzerSunroof):
+    if buzzer.buzzer == True:
+        collection.update_one({"name":"buzzer-sunroof"},{"$set":{"buzzer":buzzer.buzzer,"sunroof":False}})
+        return {"status":f"Your buzzer is now {buzzer.buzzer} and your sunroof is now False"}
+    elif buzzer.buzzer == False:
+        collection.update_one({"name":"buzzer-sunroof"},{"$set":{"buzzer":buzzer.buzzer,"sunroof":buzzer.sunroof}})
+        return {"status":f"Your buzzer is now {buzzer.buzzer} and your sunroof is now {buzzer.sunroof}"}
