@@ -31,7 +31,6 @@ app.add_middleware(
 
 class Moisture(BaseModel):
     moisture_value: int
-    moisture_default: int
 
 
 class Sprinkle(BaseModel):
@@ -104,9 +103,10 @@ def buzzer_sunroof():
 
 
 @app.post("/update/moisture")
-def update_moisture(moisture_value:int):
-    collection.update_one({"name": "moisture"},{"$set": {"moisture_value": moisture_value}})
-    return {f"Moisture has been updated to {moisture_value}"}
+def update_moisture(moist_value: Moisture):
+    moist_def = collection.find_one({"name": "moisture"})["moist_default"]
+    collection.update_one({"name": "moisture"},{"$set": {"moist_value": moist_value.moisture_value, "moist_default": moist_def}})
+    return {f"Moisture has been updated to {moist_value.moisture_value}"}
 
 
 @app.post("/update/buzzer-sunroof")
