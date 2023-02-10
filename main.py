@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException, Body
 from pymongo import MongoClient
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.encoders import jsonable_encoder
 from dotenv import load_dotenv
 import os
 
@@ -71,19 +70,15 @@ def sprinkle():
 
 @app.get("/garden/moisture")
 def moisture():
-    return list(collection.find({"name": "moisture"}))
+    return collection.find_one({"name":"moisture"},{"_id":False})
 
 @app.get("/garden/buzzer-sunroof")
 def buzzer():
-   return collection.find_one({"name":"buzzer-sunroof"},{"_id":False})
-
-@app.post("/update/sprinkle")
-def update_sprinkle(name: str, value: int):
-    pass
+    return collection.find_one({"name":"buzzer-sunroof"},{"_id":False})
 
 @app.post("/update/moisture")
-def update_moisture(name: str, value: int):
-    pass
+def update_moisture(moisture_value:int):
+    collection.update_one({"name": "moisture"},{"$set": {"moisture_value": moisture_value}})
 
 @app.post("/update/buzzer-sunroof")
 def update_buzzer(buzzer:BuzzerSunroof):
