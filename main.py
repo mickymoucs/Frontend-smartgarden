@@ -115,7 +115,7 @@ def update_garden(data: Data = Body()):
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": True, "is_auto": False}}})
             elif data.moist_default - moisture < 10 and is_auto_1 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": False, "is_auto": False}}})
-            elif data.moist_default - moisture >= 10 and is_active_2 == True:
+            if data.moist_default - moisture >= 10 and is_active_2 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": True, "is_auto": False}}})
             elif data.moist_default - moisture < 10 and is_active_2 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": True, "is_auto": False}}})
