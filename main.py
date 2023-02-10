@@ -67,3 +67,13 @@ def update_moisture(name: str, value: int):
 @app.post("/update/{name}")
 def update_buzzer(name: str, value: int):
     pass
+def moisture_to_percentage(moisture):
+    percentage = round((moisture/1023)*100,2)
+    return percentage
+
+def percentage_to_moisture(percentage):
+    percentage = round((percentage/100)*1023,2)
+    return percentage
+
+
+
