@@ -30,6 +30,7 @@ app.add_middleware(
 
 class Moisture(BaseModel):
     moisture_value: int
+    moisture_default: int
 
 class Sprinkle(BaseModel):
     is_auto: bool
@@ -60,30 +61,30 @@ def read_all_garden():
 
 @app.post("/garden/update")
 def update_garden():
-    pass
+    collection.update_one({"name": "moisture"}, {"$set": {"is_active": False}})
+    return {"message": "All garden is inactive."}
 
-@app.get("/garden/{name}")
+@app.get("/garden/sprinkle")
 def sprinkle():
     return list(collection.find({"name": "sprinkle"}))
 
-
-@app.get("/garden/{name}")
+@app.get("/garden/moisture")
 def moisture():
     return list(collection.find({"name": "moisture"}))
 
-@app.get("/garden/{name}")
+@app.get("/garden/buzzer-sunroof")
 def buzzer():
     return list(collection.find({"name": "buzzer-sunroof"}))
 
-@app.post("/update/{name}")
+@app.post("/update/sprinkle")
 def update_sprinkle(name: str, value: int):
     pass
 
-@app.post("/update/{name}")
+@app.post("/update/moisture")
 def update_moisture(name: str, value: int):
     pass
 
-@app.post("/update/{name}")
+@app.post("/update/buzzer-sunroof")
 def update_buzzer(name: str, value: int):
     pass
 
