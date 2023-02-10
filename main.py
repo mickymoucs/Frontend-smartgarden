@@ -94,7 +94,7 @@ def update_garden(data: Data = Body()):
                 collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
             elif is_active_1 == True:
                 collection.update_one({"name": "moisture"}, {"$set": {"moist_default":  data.moist_default, "moist_value": data.moist_value}})
-            elif is_auto_2 == True and is_active_2 == True:
+            if is_auto_2 == True and is_active_2 == True:
                 collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
             elif is_auto_2 == False and is_active_2 == False:
                 collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
