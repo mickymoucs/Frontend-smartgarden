@@ -90,17 +90,17 @@ def update_garden():
 
 @app.get("/garden/sprinkle")
 def sprinkle():
-    return list(collection.find({"name": "sprinkle"}))
+    return collection.find_one({"name": "sprinkle"}, {"_id": False, "name": 0})
 
 
 @app.get("/garden/moisture")
 def moisture():
-    return list(collection.find({"name": "moisture"}))
+    return collection.find_one({"name": "moisture"}, {"_id": False, "name": 0, "moist_value": 0})
 
 
 @app.get("/garden/buzzer-sunroof")
-def buzzer():
-    return list(collection.find({"name": "buzzer-sunroof"}))
+def buzzer_sunroof():
+    return collection.find_one({"name": "buzzer-sunroof"}, {"_id": False, "name": 0})
 
 
 @app.post("/update/sprinkle")
