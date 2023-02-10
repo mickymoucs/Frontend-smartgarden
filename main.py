@@ -28,13 +28,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 class Moisture(BaseModel):
     moisture_value: int
-    moisture_default: int
+
 
 class Sprinkle(BaseModel):
     is_auto: bool
     is_active: bool
+
 
 class BuzzerSunroof(BaseModel):
     buzzer: bool
@@ -53,6 +55,7 @@ def moisture_to_percentage(moisture):
     percentage = int((moisture/1023)*100)
     return percentage
 
+
 def percentage_to_moisture(percentage):
     percentage = int((percentage/100)*1023)
     return percentage
@@ -65,7 +68,25 @@ def read_root():
 
 @app.get("/garden/all")
 def read_all_garden():
-    pass
+    data = collection.find({}, {"_id": False})
+    moist = data[0]
+    sprink = data[1]
+    buz_sun = data[2]
+    for_send = {
+        "moist_value": moisture_to_percentage(moist["moist_value"]),
+        "moist_default": moisture_to_percentage(moist["moist_defualt"]),
+        "sprinkle_1": {
+            "is_auto": sprink["sprinkle_1"]["is_auto"],
+            "is_activate": sprink["sprinkle_1"]["is_activate"]
+        },
+        "sprinkle_2": {
+            "is_auto": sprink["sprinkle_2"]["is_auto"],
+            "is_activate": sprink["sprinkle_2"]["is_activate"]
+        },
+        "buzzer": buz_sun["buzzer"],
+        "sunroof": buz_sun["sunroof"]
+    }
+    return for_send
 
 
 @app.post("/garden/update")
@@ -135,26 +156,34 @@ def update_garden(data: Data = Body()):
     return {"message": "Garden is already update."}
 
 
+
 @app.get("/garden/sprinkle")
 def sprinkle():
-    return list(collection.find({"name": "sprinkle"}))
+    return collection.find_one({"name": "sprinkle"}, {"_id": False, "name": 0})
+
 
 @app.get("/garden/moisture")
 def moisture():
-    return list(collection.find({"name": "moisture"}))
+    return collection.find_one({"name": "moisture"}, {"_id": False, "name": 0, "moist_value": 0})
+
 
 @app.get("/garden/buzzer-sunroof")
-def buzzer():
-    return list(collection.find({"name": "buzzer-sunroof"}))
+def buzzer_sunroof():
+    return collection.find_one({"name": "buzzer-sunroof"}, {"_id": False, "name": 0})
 
-@app.post("/update/sprinkle")
-def update_sprinkle(name: str, value: int):
-    pass
 
 @app.post("/update/moisture")
-def update_moisture(name: str, value: int):
-    pass
+def update_moisture(moist_value: Moisture):
+    moist_def = collection.find_one({"name": "moisture"})["moist_default"]
+    collection.update_one({"name": "moisture"},{"$set": {"moist_value": moist_value.moisture_value, "moist_default": moist_def}})
+    return {f"Moisture has been updated to {moist_value.moisture_value}"}
+
 
 @app.post("/update/buzzer-sunroof")
-def update_buzzer(name: str, value: int):
-    pass
+def update_buzzer(buzzer:BuzzerSunroof):
+    if buzzer.buzzer == True:
+        collection.update_one({"name":"buzzer-sunroof"},{"$set":{"buzzer":buzzer.buzzer,"sunroof":False}})
+        return {"status":f"Your buzzer is now {buzzer.buzzer} and your sunroof is now False"}
+    elif buzzer.buzzer == False:
+        collection.update_one({"name":"buzzer-sunroof"},{"$set":{"buzzer":buzzer.buzzer,"sunroof":buzzer.sunroof}})
+        return {"status":f"Your buzzer is now {buzzer.buzzer} and your sunroof is now {buzzer.sunroof}"}
