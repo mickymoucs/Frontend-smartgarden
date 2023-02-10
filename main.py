@@ -35,7 +35,7 @@ class Moisture(BaseModel):
 
 class Sprinkle(BaseModel):
     is_auto: bool
-    is_active: bool
+    is_activate: bool
 
 
 class BuzzerSunroof(BaseModel):
