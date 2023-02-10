@@ -107,27 +107,26 @@ def update_garden(data: Data = Body()):
             is_auto_2 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_2"]["is_auto"]
             is_active_1 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_1"]["is_activate"]
             is_active_2 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_2"]["is_activate"]
-            if data.moist_default - moisture >= 100 and is_active_1 == True:
+            if data.moist_default - moisture >= 10 and is_active_1 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": True, "is_auto": False}}})
-            elif data.moist_default - moisture < 100 and is_active_1 == True:
+            elif data.moist_default - moisture < 10 and is_active_1 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": True, "is_auto": False}}}) 
-            elif data.moist_default - moisture >= 100 and is_auto_1 == True:
+            elif data.moist_default - moisture >= 10 and is_auto_1 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": True, "is_auto": False}}})
-            elif data.moist_default - moisture < 100 and is_auto_1 == True:
+            elif data.moist_default - moisture < 10 and is_auto_1 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": False, "is_auto": False}}})
-            elif data.moist_default - moisture >= 100 and is_active_2 == True:
+            elif data.moist_default - moisture >= 10 and is_active_2 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": True, "is_auto": False}}})
-            elif data.moist_default - moisture < 100 and is_active_2 == True:
+            elif data.moist_default - moisture < 10 and is_active_2 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": True, "is_auto": False}}})
-            elif data.moist_default - moisture >= 100 and is_auto_2 == True:
+            elif data.moist_default - moisture >= 10 and is_auto_2 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": True, "is_auto": False}}})
-            elif data.moist_default - moisture < 100 and is_auto_2 == True:
+            elif data.moist_default - moisture < 10 and is_auto_2 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": False, "is_auto": False}}})
-            elif data.moist_default - moisture >= 100 and is_active_2 == True:
+            elif data.moist_default - moisture >= 10 and is_active_2 == True:
                 collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": False, "is_auto": False}}})
             else:
-                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": False, "is_auto": False}, 
-                "sprinkle_2":{"is_activate": False, "is_auto": False}}})
+                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": False, "is_auto": False}, "sprinkle_2":{"is_activate": False, "is_auto": False}}})
                 
 
         if i["name"] == "buzzer-sunroof":
