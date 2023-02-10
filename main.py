@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Body
 from pymongo import MongoClient
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.encoders import jsonable_encoder
 from dotenv import load_dotenv
 import os
 
@@ -74,7 +75,7 @@ def moisture():
 
 @app.get("/garden/buzzer-sunroof")
 def buzzer():
-    return list(collection.find({"name": "buzzer-sunroof"}))
+   return collection.find_one({"name":"buzzer-sunroof"},{"_id":False})
 
 @app.post("/update/sprinkle")
 def update_sprinkle(name: str, value: int):
@@ -85,8 +86,12 @@ def update_moisture(name: str, value: int):
     pass
 
 @app.post("/update/buzzer-sunroof")
-def update_buzzer(name: str, value: int):
-    pass
-
+def update_buzzer(buzzer:BuzzerSunroof):
+    if buzzer.buzzer == True:
+        collection.update_one({"name":"buzzer-sunroof"},{"$set":{"buzzer":buzzer.buzzer,"sunroof":False}})
+        return {"status":f"Your buzzer is now {buzzer.buzzer} and your sunroof is now False"}
+    elif buzzer.buzzer == False:
+        collection.update_one({"name":"buzzer-sunroof"},{"$set":{"buzzer":buzzer.buzzer,"sunroof":buzzer.sunroof}})
+        return {"status":f"Your buzzer is now {buzzer.buzzer} and your sunroof is now {buzzer.sunroof}"}
 
 
