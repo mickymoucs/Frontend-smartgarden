@@ -42,6 +42,7 @@ class BuzzerSunroof(BaseModel):
     buzzer: bool
     sunroof: bool
 
+
 class Data(BaseModel):
     moist_value: int
     moist_default: int
@@ -81,66 +82,40 @@ def read_all_garden():
 
 @app.post("/garden/update")
 def update_garden(data: Data = Body()):
-    result = list(collection.find({}, {"_id": False}))
-    for i in result:
-        if i["name"] == "sprinkle":
-            is_auto_1 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_1"]["is_auto"]
-            is_auto_2 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_2"]["is_auto"]
-            is_active_1 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_1"]["is_activate"]
-            is_active_2 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_2"]["is_activate"]
-            if is_auto_1 == True and is_active_1 == True:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
-            elif is_auto_1 == False and is_active_1 == False:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
-            elif is_active_1 == True:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default":  data.moist_default, "moist_value": data.moist_value}})
-            if is_auto_2 == True and is_active_2 == True:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
-            elif is_auto_2 == False and is_active_2 == False:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
-            elif is_active_2 == True:
-                collection.update_one({"name": "moisture"}, {"$set": {"moist_default":  data.moist_default, "moist_value": data.moist_value}})
+    old = collection.find({}, {"_id": False})
+    moist = old[0]
+    # update the moisture default from user
+    collection.update_one({"name": "moisture"}, {"$set": {"moist_default": data.moist_default, "moist_value": data.moist_value}})
 
-        if i["name"] == "moisture":
-            moisture = i["moist_value"]
-            is_auto_1 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_1"]["is_auto"]
-            is_auto_2 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_2"]["is_auto"]
-            is_active_1 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_1"]["is_activate"]
-            is_active_2 = collection.find_one({"name": "sprinkle"}, {"_id": False})["sprinkle_2"]["is_activate"]
-            if data.moist_default - moisture >= 10 and is_active_1 == True:
-                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": True, "is_auto": False}}})
-            elif data.moist_default - moisture < 10 and is_active_1 == True:
-                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": True, "is_auto": False}}}) 
-            elif data.moist_default - moisture >= 10 and is_auto_1 == True:
-                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": True, "is_auto": False}}})
-            elif data.moist_default - moisture < 10 and is_auto_1 == True:
-                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": False, "is_auto": False}}})
-            if data.moist_default - moisture >= 10 and is_active_2 == True:
-                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": True, "is_auto": False}}})
-            elif data.moist_default - moisture < 10 and is_active_2 == True:
-                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": True, "is_auto": False}}})
-            elif data.moist_default - moisture >= 10 and is_auto_2 == True:
-                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": True, "is_auto": False}}})
-            elif data.moist_default - moisture < 10 and is_auto_2 == True:
-                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": False, "is_auto": False}}})
-            elif data.moist_default - moisture >= 10 and is_active_2 == True:
-                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_2":{"is_activate": False, "is_auto": False}}})
+    #update the buzzer and sunroof status
+    if data.buzzer == True:
+        collection.update_one({"name": "buzzer-sunroof"}, {"$set": {"buzzer": data.buzzer, "sunroof": False}})
+    elif data.buzzer == False:
+        collection.update_one({"name": "buzzer-sunroof"}, {"$set": {"buzzer": data.buzzer, "sunroof": data.sunroof}})
+    
+    # update sprinkles status
+    new_data = [data.sprinkle_1, data.sprinkle_2]
+    lst = ["sprinkle_1", "sprinkle_2"]
+    for i in range(0, 2):
+        sunroof = collection.find_one({"name": "buzzer-sunroof"}, {"_id": False})["sunroof"]
+        if new_data[i].is_auto is True:
+            moist = collection.find({}, {"_id": False})[0]
+            # if the moisture value lower than the moisture default, the sprinkle will activated.
+            if moist["moist_default"] - moist["moist_value"] >= 10 and sunroof is True:
+                collection.update_one({"name": "sprinkle"}, {"$set": {lst[i]: {"is_auto": True, "is_activate": True}}})
+            # if the moistur value is not approximate to moisture default, the sprinkle will continue activated.
+            elif moist["moist_default"] - moist["moist_value"] >= 1 and sunroof is True:
+                collection.update_one({"name": "sprinkle"}, {"$set": {lst[i]: {"is_auto": True, "is_activate": True}}})
             else:
-                collection.update_one({"name": "sprinkle"}, {"$set": {"sprinkle_1":{"is_activate": False, "is_auto": False}, "sprinkle_2":{"is_activate": False, "is_auto": False}}})
-                
-
-        if i["name"] == "buzzer-sunroof":
-            if data.buzzer is True:
-                collection.update_one({"name":"buzzer-sunroof"}, {"$set":{"buzzer": True, "sunroof": False}})
-            elif data.buzzer is False:
-                collection.update_one({"name":"buzzer-sunroof"}, {"$set":{"buzzer": data.buzzer, "sunroof": data.sunroof}})
-            elif data.sunroof is True:
-                collection.update_one({"name":"buzzer-sunroof"}, {"$set":{"buzzer": data.buzzer, "sunroof": True}})
-            elif data.sunroof is False:
-                collection.update_one({"name":"buzzer-sunroof"}, {"$set":{"buzzer": data.buzzer, "sunroof": False}})
-
+                collection.update_one({"name": "sprinkle"}, {"$set": {lst[i]: {"is_auto": True, "is_activate": False}}})
+        elif new_data[i].is_auto is False:
+            # If sunroof is true (open) sprinkle can on or off up to the condition.
+            if sunroof is True:
+                collection.update_one({"name": "sprinkle"}, {"$set": {lst[i]: {"is_auto": False, "is_activate": new_data[i].is_activate}}})
+            # If sunroof if false (off) sprinkle can not be activated.
+            else:
+                collection.update_one({"name": "sprinkle"}, {"$set": {lst[i]: {"is_auto": False, "is_activate": False}}})
     return {"message": "Garden is already update."}
-
 
 
 @app.get("/garden/sprinkle")
@@ -161,15 +136,18 @@ def buzzer_sunroof():
 @app.post("/update/moisture")
 def update_moisture(moist_value: Moisture):
     moist_def = collection.find_one({"name": "moisture"})["moist_default"]
-    collection.update_one({"name": "moisture"},{"$set": {"moist_value": moist_value.moisture_value, "moist_default": moist_def}})
+    collection.update_one({"name": "moisture"}, {"$set": {
+                          "moist_value": moist_value.moisture_value, "moist_default": moist_def}})
     return {f"Moisture has been updated to {moist_value.moisture_value}"}
 
 
 @app.post("/update/buzzer-sunroof")
-def update_buzzer(buzzer:BuzzerSunroof):
+def update_buzzer(buzzer: BuzzerSunroof):
     if buzzer.buzzer == True:
-        collection.update_one({"name":"buzzer-sunroof"},{"$set":{"buzzer":buzzer.buzzer,"sunroof":False}})
-        return {"status":f"Your buzzer is now {buzzer.buzzer} and your sunroof is now False"}
+        collection.update_one({"name": "buzzer-sunroof"},
+                              {"$set": {"buzzer": buzzer.buzzer, "sunroof": False}})
+        return {"status": f"Your buzzer is now {buzzer.buzzer} and your sunroof is now False"}
     elif buzzer.buzzer == False:
-        collection.update_one({"name":"buzzer-sunroof"},{"$set":{"buzzer":buzzer.buzzer,"sunroof":buzzer.sunroof}})
-        return {"status":f"Your buzzer is now {buzzer.buzzer} and your sunroof is now {buzzer.sunroof}"}
+        collection.update_one({"name": "buzzer-sunroof"},
+                              {"$set": {"buzzer": buzzer.buzzer, "sunroof": buzzer.sunroof}})
+        return {"status": f"Your buzzer is now {buzzer.buzzer} and your sunroof is now {buzzer.sunroof}"}
