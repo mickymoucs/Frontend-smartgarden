@@ -79,6 +79,7 @@ def buzzer():
 @app.post("/update/moisture")
 def update_moisture(moisture_value:int):
     collection.update_one({"name": "moisture"},{"$set": {"moisture_value": moisture_value}})
+    return {f"Moisture has been updated to {moisture_value}"}
 
 @app.post("/update/buzzer-sunroof")
 def update_buzzer(buzzer:BuzzerSunroof):
