@@ -23,7 +23,7 @@ def update_moisture(moist_value: Moisture) -> Dict:
             }
         },
     )
-    return {f"Moisture has been updated to {moist_value.moisture_value}"}
+    return {"status": f"Moisture has been updated to {moist_value.moisture_value}"}
 
 
 @router.post("/buzzer-sunroof")
