@@ -97,19 +97,19 @@ async def update_garden(data: Data = Body()) -> Dict:
     new_data = [data.sprinkle_1, data.sprinkle_2]
     lst = ["sprinkle_1", "sprinkle_2"]
     for i in range(0, 2):
-        sunroof = collection.find_one({"name": "buzzer-sunroof"}, {"_id": False})[
-            "sunroof"
-        ]
+        sunroof = collection.find_one({"name": "buzzer-sunroof"}, {"_id": False})["sunroof"]
         if new_data[i].is_auto is True:
             moist = collection.find({}, {"_id": False})[0]
             # if the moisture value lower than the moisture default, the sprinkle will activated.
-            if moist["moist_default"] - moist["moist_value"] >= 10 and sunroof is True:
+            if moist["moist_default"] - moist["moist_value"] >= 10:
+                collection.update_one({"name": "buzzer-sunroof"}, {"$set": {"sunroof": True, "buzzer": False}})
                 collection.update_one(
                     {"name": "sprinkle"},
                     {"$set": {lst[i]: {"is_auto": True, "is_activate": True}}},
                 )
             # if the moistur value is not approximate to moisture default, the sprinkle will continue activated.
-            elif moist["moist_default"] - moist["moist_value"] >= 1 and sunroof is True:
+            elif moist["moist_default"] - moist["moist_value"] >= 1:
+                collection.update_one({"name": "buzzer-sunroof"}, {"$set": {"sunroof": True, "buzzer": False}})
                 collection.update_one(
                     {"name": "sprinkle"},
                     {"$set": {lst[i]: {"is_auto": True, "is_activate": True}}},
