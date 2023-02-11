@@ -11,7 +11,7 @@ router = APIRouter(
 
 
 @router.post("/moisture")
-def update_moisture(moist_value: Moisture) -> Dict:
+async def update_moisture(moist_value: Moisture) -> Dict:
     """Update the moisture value to database."""
     moist_def = collection.find_one({"name": "moisture"})["moist_default"]
     collection.update_one(
@@ -27,7 +27,7 @@ def update_moisture(moist_value: Moisture) -> Dict:
 
 
 @router.post("/buzzer-sunroof")
-def update_buzzer(buzzer: BuzzerSunroof) -> Dict:
+async def update_buzzer(buzzer: BuzzerSunroof) -> Dict:
     """Update the buzzer and sunroof status to database."""
     if buzzer.buzzer == True:
         collection.update_one(

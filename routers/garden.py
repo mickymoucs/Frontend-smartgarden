@@ -68,7 +68,7 @@ def read_all_garden() -> Dict:
 
 
 @router.post("/update")
-def update_garden(data: Data = Body()) -> Dict:
+async def update_garden(data: Data = Body()) -> Dict:
     """Update the data from the body's data that send with the request."""
     # update the moisture default from user
     collection.update_one(
