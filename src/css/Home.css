@@ -1,0 +1,12 @@
+.header{
+    background-image: url('../assets/flowerbg.jpg');
+    background-size: cover;
+    color: #ef6a89;
+    padding: 10px;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    border-radius: 20px;
+    text-shadow: 2px 2px white;
+}

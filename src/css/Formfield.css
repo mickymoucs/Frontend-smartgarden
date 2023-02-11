@@ -1,0 +1,16 @@
+.form-field{
+    color : black;
+    font-size : 1.5rem;
+    padding-top : 2rem;
+    margin: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.input-field{
+    font-size : 1.5rem;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 10px;
+    width : 15%;
+    margin-left: 1rem;
+    border : 0.25rem solid #84a981;
+}

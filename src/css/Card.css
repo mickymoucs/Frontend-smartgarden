@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Signika:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+
+*{
+    font-family: 'Itim', sans-serif;
+}
+
+.percent{
+    padding: 0.5rem;
+    border-radius: 20px;
+    top: 0;
+    right: 0;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    margin-bottom : 1rem;
+}
+
+.moistcard{
+    padding:1rem 2rem; 
+    background-color: #F3F8F2;
+    display: grid;
+    grid-template-rows: 5rem 1fr;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+    margin: 0.5rem;
+}
+
+.card-head{
+    font-size: 3rem;
+    font-weight: 500;
+    color: #6B9080;
+    justify-items: start;
+    text-align: left;
+}
+
+.percentvalue{
+    font-size: 7.5rem;
+    font-weight: 700;
+    color: #2F3E46;
+    justify-self: center;
+    border-radius: 20px;;  
+    width: 80%;
+}
+
+.status-card{
+    display: grid;
+    grid-template-rows: 4rem 1fr 4rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: black;
+    background-color: #F3F8F2;
+    padding:1rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+    margin: 0.5rem;
+}
+
+.status-header {
+    font-size: 2rem;
+    font-weight: 700;
+    color: black;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.status-text {
+    font-size: 2rem;
+}
+
+.happy {
+    color: #6B9080;
+}
+
+.sad {
+    color: red
+}
+
+.smileimg{
+    width :100%;
+    height: auto;
+}
+.finetext{
+    font-size: 2rem;
+    font-weight: 700;
+    color: black;
+    margin-top: 75px;
+    margin-right : 40px;
+
+}
+
+.inputsubmit{
+    color : black;
+    font-size: 2rem;
+    margin-top : 1.25rem;
+}
+
+.submit{
+    display : grid;
+    grid-template-rows: repeat(2, 1fr);
+}
+.sprinkle{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: black;
+    padding: 0.5rem;
+    top: 0;
+    right: 0;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 1rem;
+}
+
+.sprinkle1{
+    background-color: #F3F8F2;
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+}
+
+.sprinkle2{
+    background-color: #F3F8F2;
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+}
+.sound{
+    height : 100%;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: black;
+    background-color:#F3F8F2;
+    padding: 0.5rem;
+    border-radius: 20px;
+    top: 0;
+    right: 0;
+    margin: auto;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 1rem;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 1rem;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+}
+
+.fine{
+    display : grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+img{
+    width: 75%;
+    height: auto;
+    object-fit: cover;
+    margin: 2rem;
+}
+
+.form{
+    background-color : #F3F8F2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    margin: auto;
+    border-radius: 20px;
+    gap : 1rem;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+}
+.group{
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 20px;
+    background-color:#F3F8F2;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: black;
+    font-family: 'Poppins', sans-serif;
+    margin-left: 250px;
+}
+
+.groupsound{
+    margin-left: 575px;
+}
+
+.sprinkleheader{
+    margin-top: 40px;
+    color : #2F3E46;
+    font-size: 2rem;
+}
+
+.finetree{
+    width : 50%;
+}
