@@ -4,7 +4,7 @@ import { postGarden } from "../services/garden";
 import { useState } from "react";
 import happy from "../assets/happy.png";
 import sad from "../assets/sad.png";
-import Button from "./Button";
+import { Button } from 'reactstrap';
 import "../css/Formfield.css";
 import { FormGroup, Label, Input } from "reactstrap";
 import fine from "../assets/fine.png";
@@ -47,6 +47,7 @@ const Card = ({
     const res = await postGarden(result);
     console.log(res);
   };
+
   const handleBuzzer = async () => {
     const result = {
       moist_value: moist_value,
@@ -163,7 +164,7 @@ const Card = ({
 
   const check_photo = (moist_value) => {
     let routeimg = happy;
-    if (moist_value < 60) {
+    if (moist_value < moist_default) {
       routeimg = sad;
     }
     return routeimg;
@@ -179,28 +180,21 @@ const Card = ({
         <div className="status-card">
           <div className="card-head">
             Status
-            <span>
-              {sunroof === true &&
-              buzzer === false &&
-              (is_activate2 === true ||
-                is_activate1 === true ||
-                is_auto1 === true ||
-                is_auto2 === true) ? (
-                <img src={water} />
-              ) : (
-                <h4></h4>
-              )}
-            </span>
+            
           </div>
           <div className="smileimg">
-            <img src={check_photo(moist_value)} />
+            <img src={check_photo(moist_value)} className="status-img"/>
           </div>
-          <div
-            className={`status-text ${
-              moist_value < { moist_default } ? "sad" : "happy"
-            }`}
-          >
-            {moist_value < { moist_default } ? "I need water!!!" : "I'm fine!"}
+          <div>
+            {moist_value < moist_default ? 
+            <div className="status-text sad">
+            I need water!!! </div>
+            : 
+            <div className="status-text happy">
+            I'm fine!
+            </div>
+            }
+            
           </div>
         </div>
       </div>
@@ -231,8 +225,9 @@ const Card = ({
               }}
             />
           </div>
-
-          <Button name="Submit" type="submit" />
+          <div className="submit-button">
+          <Button color="success" type="submit" >Submit</Button>
+          </div>
         </div>
       </form>
 
@@ -343,6 +338,18 @@ const Card = ({
             </div>
           </div>
         </div>
+        <span>
+              {sunroof === true &&
+              buzzer === false &&
+              (is_activate2 === true ||
+                is_activate1 === true ||
+                is_auto1 === true ||
+                is_auto2 === true) ? (
+                <img src={water} className="watering"/>
+              ) : (
+                <></>
+              )}
+          </span>
       </div>
       <div className="sound">
         <div>

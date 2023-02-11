@@ -1,6 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Signika:wght@500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
 
 *{
@@ -77,13 +74,13 @@
 }
 
 .sad {
-    color: red
+    color: #ae2012
 }
 
-.smileimg{
-    width :100%;
-    height: auto;
+.status-img {
+    width: 40%;
 }
+
 .finetext{
     font-size: 2rem;
     font-weight: 700;
@@ -100,8 +97,10 @@
 }
 
 .submit{
-    display : grid;
-    grid-template-rows: repeat(2, 1fr);
+    display : flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .sprinkle{
     font-size: 1.5rem;
@@ -112,7 +111,7 @@
     right: 0;
     margin: auto;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
     font-family: 'Poppins', sans-serif;
     margin-top: 1rem;
@@ -169,6 +168,7 @@ img{
     border-radius: 20px;
     gap : 1rem;
     box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+    margin: 0.5rem;
 }
 .group{
     margin: 1rem;
@@ -194,4 +194,13 @@ img{
 
 .finetree{
     width : 50%;
+}
+
+.watering {
+    height: 3rem;
+    width: auto;
+}
+
+.submit-button {
+    margin-top: 0.75rem;
 }

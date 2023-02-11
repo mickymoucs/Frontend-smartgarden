@@ -17,8 +17,8 @@ const Home=()=> {
             is_auto: true,
             is_activate: false
         },
-        buzzer: true,
-        sunroof: false
+        buzzer: false,
+        sunroof: true
     }
      
     )
