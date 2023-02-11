@@ -4,11 +4,12 @@ import { postGarden } from "../services/garden";
 import { useState } from "react";
 import happy from "../assets/happy.png";
 import sad from "../assets/sad.png";
-import { Button } from 'reactstrap';
+import { Button } from "reactstrap";
 import "../css/Formfield.css";
 import { FormGroup, Label, Input } from "reactstrap";
 import fine from "../assets/fine.png";
-import water from "../assets/water-lww.gif";
+import water from "../assets/waterdance.gif";
+import faucetoff from "../assets/faucetoff.png";
 
 const Card = ({
   moist_value,
@@ -21,7 +22,7 @@ const Card = ({
   sunroof,
 }) => {
   const [moist_valuegarden, setMoist_valuegarden] = useState(moist_value);
-  const [moist_defaultgarden, setMoist_defultgarden] = useState(0);
+  const [moist_defaultgarden, setMoist_defultgarden] = useState(60);
   const [is_auto1garden, setIs_auto1] = useState(is_auto1);
   const [is_activate1garden, setis_activate1] = useState(is_activate1);
   const [is_auto2garden, setIs_auto2] = useState(is_auto2);
@@ -178,23 +179,16 @@ const Card = ({
           <div className="percentvalue">{moist_value}%</div>
         </div>
         <div className="status-card">
-          <div className="card-head">
-            Status
-            
-          </div>
+          <div className="card-head">Status</div>
           <div className="smileimg">
-            <img src={check_photo(moist_value)} className="status-img"/>
+            <img src={check_photo(moist_value)} className="status-img" />
           </div>
           <div>
-            {moist_value < moist_default ? 
-            <div className="status-text sad">
-            I need water!!! </div>
-            : 
-            <div className="status-text happy">
-            I'm fine!
-            </div>
-            }
-            
+            {moist_value < moist_default ? (
+              <div className="status-text sad">I need water!!! </div>
+            ) : (
+              <div className="status-text happy">I'm fine!</div>
+            )}
           </div>
         </div>
       </div>
@@ -210,7 +204,7 @@ const Card = ({
           <div>
             <img className="finetree" src={fine} />
           </div>
-          <div className="finetext">Now I'm fine at {moist_default}.</div>
+          <div className="finetext">Now I'm fine at {moist_default}%</div>
         </div>
 
         <div className="submit">
@@ -226,7 +220,9 @@ const Card = ({
             />
           </div>
           <div className="submit-button">
-          <Button color="success" type="submit" >Submit</Button>
+            <Button color="success" type="submit">
+              Submit
+            </Button>
           </div>
         </div>
       </form>
@@ -235,6 +231,7 @@ const Card = ({
         <div className="sprinkle1">
           <div className="sprinkleheader">
             <div>Sprinkle 1</div>
+            <h4>________________________________</h4>
           </div>
           <div>
             <div>
@@ -288,6 +285,7 @@ const Card = ({
         <div className="sprinkle2">
           <div className="sprinkleheader">
             <div>Sprinkle 2</div>
+            <h4>________________________________</h4>
           </div>
           <div>
             <div>
@@ -338,23 +336,25 @@ const Card = ({
             </div>
           </div>
         </div>
-        <span>
-              {sunroof === true &&
-              buzzer === false &&
-              (is_activate2 === true ||
-                is_activate1 === true ||
-                is_auto1 === true ||
-                is_auto2 === true) ? (
-                <img src={water} className="watering"/>
-              ) : (
-                <></>
-              )}
+        <div className="wateringswitch">
+          <span>
+            {sunroof === true &&
+            buzzer === false &&
+            (is_activate2 === true ||
+              is_activate1 === true ||
+              is_auto1 === true ||
+              is_auto2 === true) ? (
+              <img src={water} className="watering" />
+            ) : (
+              <img src={faucetoff} className="faucetoff" />
+            )}
           </span>
+        </div>
       </div>
       <div className="sound">
         <div>
           <div className="sprinkleheader">
-            <div>Sound</div>
+            <div>Insect Repellent Sound</div>
           </div>
           <div className="groupsound">
             <FormGroup switch>

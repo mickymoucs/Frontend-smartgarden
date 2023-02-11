@@ -42,6 +42,7 @@
     justify-self: center;
     border-radius: 20px;;  
     width: 80%;
+    text-shadow: 5px 5px 7px #a2a2a2;
 }
 
 .status-card{
@@ -66,7 +67,7 @@
 }
 
 .status-text {
-    font-size: 2rem;
+    font-size: 2.5rem;
 }
 
 .happy {
@@ -82,17 +83,17 @@
 }
 
 .finetext{
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: black;
-    margin-top: 75px;
-    margin-right : 40px;
-
+    margin-top: 50px;
+    margin-right : 20px;
+    grid-template-columns: 500px;
 }
 
 .inputsubmit{
     color : black;
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-top : 1.25rem;
 }
 
@@ -128,6 +129,13 @@
     border-radius: 20px;
     box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
 }
+
+.wateringswitch{
+    background-color: #F3F8F2;
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+}
+
 .sound{
     height : 100%;
     font-size: 1.5rem;
@@ -179,7 +187,7 @@ img{
     font-weight: 700;
     color: black;
     font-family: 'Poppins', sans-serif;
-    margin-left: 250px;
+    margin-left: 160px;
 }
 
 .groupsound{
@@ -187,9 +195,12 @@ img{
 }
 
 .sprinkleheader{
-    margin-top: 40px;
-    color : #2F3E46;
-    font-size: 2rem;
+    font-size: 3rem;
+    font-weight: 500;
+    color: #6B9080;
+    justify-items: start;
+    text-align: center;
+    margin-top: 1.5rem;
 }
 
 .finetree{
@@ -197,8 +208,9 @@ img{
 }
 
 .watering {
-    height: 3rem;
-    width: auto;
+    width: 292px;
+    height: 292px;
+    object-fit: scale-down;
 }
 
 .submit-button {

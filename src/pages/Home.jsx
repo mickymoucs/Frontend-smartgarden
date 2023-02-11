@@ -38,7 +38,7 @@ const Home=()=> {
     return (
         <div className='background'>
             <div className="header">
-            <h1>❀ My Little Garden ❀</h1></div>
+            <h1>🌱 My Little Garden</h1></div>
             <Card moist_value={gardenInfo.moist_value}
                 moist_default={gardenInfo.moist_default} 
                 is_auto1={gardenInfo.sprinkle_1.is_auto} 
