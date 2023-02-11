@@ -7,7 +7,7 @@ import '../css/Home.css'
 const Home=()=> {
     const [gardenInfo, setGardenInfo] = useState(// const data for test
     {
-        moist_value : 65,
+        moist_value : 90,
         moist_default: 58,
         sprinkle_1 : {
             is_auto: true,

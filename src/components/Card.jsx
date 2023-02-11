@@ -338,14 +338,15 @@ const Card = ({
         </div>
         <div className="wateringswitch">
           <span>
-            {((is_auto1===true||is_auto2===true)&&moist_value>=moist_default)?
-              <img src={faucetoff} className="faucetoff" />:
+            {
               (sunroof === true &&
                 buzzer === false &&
-                (is_activate2 === true ||
-                  is_activate1 === true ||
-                  is_auto1 === true ||
-                  is_auto2 === true)) ? (
+                (is_activate1===true||
+                is_activate2===true||
+                ((is_auto1===true||is_auto2===true)&&moist_value<moist_default)
+                )
+                
+                ) ? (
                   <img src={water} className="watering" />
                 ) : (
                   <img src={faucetoff} className="faucetoff" />
