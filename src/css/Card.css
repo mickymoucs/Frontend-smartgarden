@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+
+*{
+    font-family: 'Itim', sans-serif;
+}
+
+.percent{
+    padding: 0.5rem;
+    border-radius: 20px;
+    top: 0;
+    right: 0;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    margin-bottom : 1rem;
+}
+
+.moistcard{
+    padding:1rem 2rem; 
+    background-color: #F3F8F2;
+    display: grid;
+    grid-template-rows: 5rem 1fr;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+    margin: 0.5rem;
+}
+
+.card-head{
+    font-size: 3rem;
+    font-weight: 500;
+    color: #6B9080;
+    justify-items: start;
+    text-align: left;
+}
+
+.percentvalue{
+    font-size: 7.5rem;
+    font-weight: 700;
+    color: #2F3E46;
+    justify-self: center;
+    border-radius: 20px;;  
+    width: 80%;
+    text-shadow: 5px 5px 7px #a2a2a2;
+}
+
+.status-card{
+    display: grid;
+    grid-template-rows: 4rem 1fr 4rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: black;
+    background-color: #F3F8F2;
+    padding:1rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+    margin: 0.5rem;
+}
+
+.status-header {
+    font-size: 2rem;
+    font-weight: 700;
+    color: black;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.status-text {
+    font-size: 2.5rem;
+}
+
+.happy {
+    color: #6B9080;
+}
+
+.sad {
+    color: #ae2012;
+}
+
+.status-img {
+    width: 40%;
+}
+
+.finetext{
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: black;
+    margin-top: 50px;
+    margin-right : 20px;
+    grid-template-columns: 500px;
+}
+
+.inputsubmit{
+    color : black;
+    font-size: 2.5rem;
+    margin-top : 1.25rem;
+}
+
+.submit{
+    display : flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.sprinkle{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: black;
+    padding: 0.5rem;
+    top: 0;
+    right: 0;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 1rem;
+}
+
+.sprinkle1{
+    background-color: #F3F8F2;
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+}
+
+.sprinkle2{
+    background-color: #F3F8F2;
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+}
+
+.wateringswitch{
+    background-color: #F3F8F2;
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+}
+
+.sound{
+    height : 100%;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: black;
+    background-color:#F3F8F2;
+    padding: 0.5rem;
+    border-radius: 20px;
+    top: 0;
+    right: 0;
+    margin: auto;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 1rem;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 1rem;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+}
+
+.fine{
+    display : grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+img{
+    width: 75%;
+    height: auto;
+    object-fit: cover;
+    margin: 2rem;
+}
+
+.form{
+    background-color : #F3F8F2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    margin: auto;
+    border-radius: 20px;
+    gap : 1rem;
+    box-shadow: 0px 2px 8px rgba(99, 99, 99, 0.2);
+    margin: 0.5rem;
+}
+.group{
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 20px;
+    background-color:#F3F8F2;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: black;
+    font-family: 'Poppins', sans-serif;
+    margin-left: 160px;
+}
+
+.groupsound{
+    margin-left: 575px;
+}
+
+.sprinkleheader{
+    font-size: 3rem;
+    font-weight: 500;
+    color: #6B9080;
+    justify-items: start;
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.finetree{
+    width : 50%;
+}
+
+.watering {
+    width: 292px;
+    height: 292px;
+    object-fit: scale-down;
+}
+
+.submit-button {
+    margin-top: 0.75rem;
+}
+
+.Can{
+    color : #ae2012;
+}
