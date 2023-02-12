@@ -5,23 +5,24 @@
 #include <ESP32Servo.h>
 #define analog_Pin 32
 #define BUTTON1 27 // for trun on servo and bozer
-#define BUTTON2 26
 Servo myservo;
 TaskHandle_t TaskA = NULL;
 TaskHandle_t TaskB = NULL;
 Bounce button1 = Bounce();
-Bounce button2 = Bounce();
-int count = 0;
+boolean statu_post = true;
 int buzzer = 12;
-int status_button1 = 0;
 int sprinkle_1_pin = 33;
 int sprinkle_2_pin = 25;
+int LED_MODE = 26;
 int val_soil_moisture = 0;
-int ststus_servo = 1;
+int count_for_sunroof = 0;
+int counT_manual_action = 0;
 void auto_watering_system();
 void insect_repellent();
 void soil_moisture_detection();
 void sunroof_control();
+void GET_buzzer_sunroof();
+void POST_moisture();
 void manual_watering_system(void *pam);
 
 // moisture
@@ -36,16 +37,18 @@ boolean is_activate_sprinkle_2 = false;
 // buzzer & sunroof
 boolean buzzer_is_activate = false;
 boolean sunroof_is_open = true;
-boolean user_ignore = true;
+boolean sunroof_is_open_befor = sunroof_is_open;
+boolean buzzer_is_activate_befor = buzzer_is_activate;
 
 const String baseUrl = "https://ecourse.cpe.ku.ac.th/exceed08/";
 
 void POST_buzzer_sunroof()
 {
+  statu_post = false;
   String json;
   DynamicJsonDocument doc(2048);
-  doc["buzzer"] = 1;
-  doc["sunroof"] = 0;
+  doc["buzzer"] = buzzer_is_activate;
+  doc["sunroof"] = sunroof_is_open;
   serializeJson(doc, json);
 
   const String url = baseUrl + "update/buzzer-sunroof";
@@ -70,70 +73,76 @@ void All_Switch(void *param)
   while (1)
   {
     button1.update();
-    if (button1.fell())
+    if (button1.fell() &&  statu_post)
     {
+      Serial.print("statu_post_in if= ");
+      Serial.println(statu_post);
       sunroof_is_open = !sunroof_is_open;
-      Serial.println(sunroof_is_open);
     }
-    vTaskDelay(2 / portTICK_PERIOD_MS);
-    button2.update();
+    vTaskDelay(1 / portTICK_PERIOD_MS);
   }
 }
-
 void all_system(void *param)
 {
   while (1)
   {
-    if (!sunroof_is_open || buzzer_is_activate) // ปิดฝา
+    if (buzzer_is_activate) // ถ้าเปิดเสียงต้องปิดsunroof
     {
-      if (count == 0)
+      Serial.println("turn on buzzer");
+      sunroof_is_open = false;
+      myservo.write(90);
+      vTaskDelay(10 / portTICK_PERIOD_MS);
+      insect_repellent();
+      vTaskDelay(10 / portTICK_PERIOD_MS);
+    }
+    if (!buzzer_is_activate) // ถ้าปิดเสียงแล้วจะเปิดหรือปิด sunroof ก็ได้
+    {
+      if (sunroof_is_open)
       {
-        is_activate_sprinkle_1 = false;
-        is_activate_sprinkle_2 = false;
-        sunroof_is_open = false;
-        digitalWrite(sprinkle_1_pin, is_activate_sprinkle_1);
-        digitalWrite(sprinkle_2_pin, is_activate_sprinkle_2); // ปิดน้ำก่อน
-        POST_buzzer_sunroof();
-        myservo.write(90);
-        delay(100);
+        myservo.write(0);
+        // Serial.println("Servo->0");
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+        if (auto_sprinkle_1)
+        {
+          if (val_soil_moisture < moist_sensor)
+          {
+            digitalWrite(sprinkle_1_pin, HIGH);
+          }
+          else
+          {
+            digitalWrite(sprinkle_1_pin, LOW);
+          }
+        }
+        if (auto_sprinkle_2)
+        {
+          if (val_soil_moisture < moist_sensor)
+          {
+            digitalWrite(sprinkle_2_pin, HIGH);
+          }
+          else
+          {
+            digitalWrite(sprinkle_2_pin, LOW);
+          }
+        }
+        if (!auto_sprinkle_1)
+        {
+          digitalWrite(sprinkle_1_pin, is_activate_sprinkle_1);
+        }
+        if (!auto_sprinkle_2)
+        {
+          digitalWrite(sprinkle_2_pin, is_activate_sprinkle_2);
+        }
       }
       else
       {
-        insect_repellent();
-        delay(1);
-      }
-      count++;
-    }
-    else // เปิดฝา
-    {
-      count = 0;
-      myservo.write(0);
-      sunroof_is_open = true;
-      delay(100);
-      if (auto_sprinkle_1)
-      {
-      }
-      if (auto_sprinkle_2)
-      {
-        if (moist_sensor)
-        {
-          digitalWrite(sprinkle_1_pin, HIGH);
-        }
-        else
-        {
-          digitalWrite(sprinkle_1_pin, LOW);
-        }
-      }
-      if (!auto_sprinkle_1)
-      {
-        digitalWrite(sprinkle_1_pin, is_activate_sprinkle_1);
-      }
-      if (!auto_sprinkle_2)
-      {
-        digitalWrite(sprinkle_2_pin, is_activate_sprinkle_2); // ปิดน้ำก่อน
+        digitalWrite(sprinkle_1_pin, LOW);
+        digitalWrite(sprinkle_2_pin, LOW);
+        sunroof_is_open = false; // ปิดฝา
+        myservo.write(90);
+        // Serial.println("server ->0 ");
+        vTaskDelay(100 / portTICK_PERIOD_MS);
       }
     }
-    vTaskDelay(1 / portTICK_PERIOD_MS);
   }
 }
 void insect_repellent() // ไล่แมลง
@@ -188,7 +197,7 @@ void GET_moisture()
   {
     String payload = http.getString();
     deserializeJson(doc, payload);
-    moist_sensor = doc["moisture"].as<int>();
+    moist_sensor = doc["moist_default"].as<int>();
     Serial.print("moist_sensor = ");
     Serial.println(moist_sensor);
   }
@@ -210,10 +219,14 @@ void GET_buzzer_sunroof()
   {
     String payload = http.getString();
     deserializeJson(doc, payload);
-    int buzzer_is_activate = doc["buzzer"].as<int>();
-    int sunroof_is_open = doc["sunroof"].as<int>();
+    buzzer_is_activate = doc["buzzer"].as<boolean>();
+    sunroof_is_open = doc["sunroof"].as<boolean>();
+    Serial.print("buzzer_is_activate_befor = ");
+    Serial.println(buzzer_is_activate_befor);
     Serial.print("buzzer_is_activate = ");
     Serial.println(buzzer_is_activate);
+    Serial.print("sunroof_is_open_befor = ");
+    Serial.println(sunroof_is_open_befor);
     Serial.print("sunroof_is_open = ");
     Serial.println(sunroof_is_open);
   }
@@ -270,7 +283,7 @@ void GET_SPRINKLE()
 
     Serial.print("is_active_sprinkle_2 = ");
     Serial.println(is_activate_sprinkle_2);
-    delay(500);
+    delay(500);                                      
   }
   else
   {
@@ -284,26 +297,38 @@ void setup()
   Serial.begin(115200);
   Connect_Wifi();
   GET_moisture();
-  GET_buzzer_sunroof();
-  POST_moisture();
-  POST_buzzer_sunroof();
+  POST_buzzer_sunroof;
   button1.interval(25);
-  button2.interval(25);
   pinMode(buzzer, OUTPUT);
   pinMode(sprinkle_1_pin, OUTPUT);
   pinMode(sprinkle_2_pin, OUTPUT);
+  pinMode(LED_MODE, OUTPUT);
   button1.attach(BUTTON1, INPUT_PULLUP);
-  button2.attach(BUTTON2, INPUT_PULLUP);
   myservo.attach(19);
-  xTaskCreatePinnedToCore(All_Switch, "All_Switch", 1000, NULL, 1, &TaskA, 0);
-  xTaskCreatePinnedToCore(all_system, "all_system", 10240, NULL, 1, &TaskB, 1);
+  xTaskCreatePinnedToCore(All_Switch, "All_Switch", 10240, NULL, 1, &TaskA, 1);
+  xTaskCreatePinnedToCore(all_system, "all_system", 10240, NULL, 1, &TaskB, 0);
 }
 
 void loop()
-{
+{ statu_post=false;
+  int count_krean = 0;
   GET_moisture();
   GET_SPRINKLE();
-  GET_buzzer_sunroof();
-  POST_buzzer_sunroof();
   POST_moisture();
+  digitalWrite(LED_MODE, LOW);
+  GET_buzzer_sunroof();
+  digitalWrite(LED_MODE, HIGH);
+  statu_post=true;
+  delay(2000);
+  digitalWrite(LED_MODE, LOW);
+  if (((buzzer_is_activate_befor != buzzer_is_activate) || (sunroof_is_open_befor != sunroof_is_open)))
+  { statu_post=false;
+    Serial.println("stop");
+    POST_buzzer_sunroof();
+    Serial.println("update_post");
+    sunroof_is_open_befor = sunroof_is_open;
+    buzzer_is_activate_befor = buzzer_is_activate;
+    digitalWrite(LED_MODE, LOW);
+    delay(1000);
+  }
 }
