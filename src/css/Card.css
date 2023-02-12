@@ -75,7 +75,7 @@
 }
 
 .sad {
-    color: #ae2012
+    color: #ae2012;
 }
 
 .status-img {
@@ -215,4 +215,8 @@ img{
 
 .submit-button {
     margin-top: 0.75rem;
+}
+
+.Can{
+    color : #ae2012;
 }

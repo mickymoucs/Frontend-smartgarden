@@ -400,6 +400,9 @@ const Card = ({
             </div>
           )}
         </div>
+        <div className="Can">
+            {sunroof===true?(<h5>You can watering!</h5>):(<h5>You can't watering!!</h5>)}
+          </div>
       </div>
     </div>
   );
